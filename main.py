@@ -75,13 +75,11 @@ def create_student(student: Student, response: Response):
 @app.put("/student/{student_id}", status_code=200)
 def update_student(student_id: int, student: UpdateStudent, response: Response):
     if student_id not in students:
-        response.status_code = 400
+        response.status_code = 404
         return {
             "msg": "Student does not exist!"
         }
 
-    print(student)
-    print(students[student_id])
     if student.name:
         students[student_id]["name"] = student.name
 
@@ -92,3 +90,17 @@ def update_student(student_id: int, student: UpdateStudent, response: Response):
         students[student_id]["year"] = student.year
 
     return student_id
+
+
+@app.delete("/student/{student_id}", status_code=200)
+def delete_student(student_id: int, response: Response):
+    if student_id not in students:
+        response.status_code = 404
+        return {
+            "msg": "Student does not exist!"
+        }
+
+    del students[student_id]
+    return {
+        "msg": "success"
+    }
