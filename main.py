@@ -23,6 +23,12 @@ class Student(BaseModel):
     student_id: int
 
 
+class UpdateStudent(BaseModel):
+    name: Optional[str] = None
+    age: Optional[int] = None
+    year: Optional[str] = None
+
+
 @app.get("/")
 def index():
     return {"name": "First Data"}
@@ -56,3 +62,24 @@ def create_student(student: Student):
     }
 
     return student.student_id
+
+
+@app.put("/student/{student_id}")
+def update_student(student_id: int, student: UpdateStudent):
+    if student_id not in students:
+        return {
+            "msg": "Student does not exist!"
+        }
+
+    print(student)
+    print(students[student_id])
+    if student.name:
+        students[student_id]["name"] = student.name
+
+    if student.age:
+        students[student_id]["age"] = student.age
+
+    if student.year:
+        students[student_id]["year"] = student.year
+
+    return student_id
